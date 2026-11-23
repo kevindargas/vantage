@@ -79,10 +79,12 @@ Vantage builds to plain files, so any static host works. `pnpm build` writes the
 **GitHub Pages**
 
 1. Fork or copy the repository.
-2. Run `pnpm pages`. It builds with the repository name as the base path and pushes the result to a `gh-pages` branch.
-3. In the repository settings, under Pages, choose "Deploy from a branch" and select `gh-pages`.
+2. In the repository settings, under Pages, set the source to "GitHub Actions".
+3. Push to `main`. The Pages workflow builds the site with the repository name as the base path and publishes it.
 
 The site appears at `https://<you>.github.io/<repository>/`.
+
+To publish from your own machine instead, run `pnpm pages`. It pushes the build to a `gh-pages` branch; set the Pages source to "Deploy from a branch" and select it.
 
 **Anywhere else**
 
@@ -96,7 +98,7 @@ Each visitor gets a separate workspace in their own browser. Nothing is shared b
 | --- | --- |
 | `pnpm dev` | Start the development server |
 | `pnpm build` | Static build into `out/` |
-| `pnpm pages` | Build and publish to GitHub Pages |
+| `pnpm pages` | Build and publish to GitHub Pages by hand |
 | `pnpm typecheck` | TypeScript, no emit |
 | `pnpm lint` | ESLint |
 | `pnpm test` | Unit and component tests |
