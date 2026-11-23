@@ -65,7 +65,7 @@ export function PersonChip({
   if (!link || !person) return <span className={classes}>{body}</span>
   return (
     <Link
-      href={`/people/${person.id}`}
+      href={`/people/profile?id=${person.id}`}
       className={cn(
         classes,
         "rounded-md underline-offset-4 outline-none hover:underline focus-visible:ring-2 focus-visible:ring-ring"

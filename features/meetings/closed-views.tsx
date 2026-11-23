@@ -65,7 +65,7 @@ export function CompletedView({
     <div className="flex flex-col gap-6">
       {next && (
         <Link
-          href={`/meetings/${next.id}`}
+          href={`/meetings/session?id=${next.id}`}
           className="flex flex-wrap items-center justify-between gap-2 rounded-xl border bg-card px-4 py-3 text-sm transition-colors outline-none hover:bg-muted/50 focus-visible:ring-2 focus-visible:ring-ring"
         >
           <span className="flex items-center gap-2">
@@ -417,7 +417,7 @@ export function CancelledView({
           </Button>
           {next ? (
             <Link
-              href={`/meetings/${next.id}`}
+              href={`/meetings/session?id=${next.id}`}
               className="text-sm underline-offset-4 hover:underline"
             >
               Next 1:1 with {name}: {formatWhen(next.scheduledAt)}

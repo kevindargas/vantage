@@ -74,17 +74,19 @@ Every page follows the same skeleton so the eye lands in the same place on every
 - **Sheets**: `SheetContent className={cn(sheetWidths.detail | sheetWidths.editor, "flex flex-col gap-0 p-0")}`, then `SheetHeader className="border-b px-6 py-5"`, `SheetBody`, `SheetFooterActions`. All from `components/shared/sheet-frame.tsx`.
 - **Dialogs**: short forms use `Dialog`; longer forms use a `Sheet`.
 - **Empty states**: `EmptyState` with a title, one sentence and an action. Every list and chart has one, because a workspace can be empty.
-- **Record pages** (`/people/[id]`, `/meetings/[id]`): the route awaits `params` and passes the id to a client view. The view looks the record up in the workspace and renders `RecordNotFound` when it is missing. There is no `generateStaticParams`, because ids are created in the browser.
+- **Record pages** (`/people/profile?id=`, `/meetings/session?id=`): the app is a static export and ids are created in the browser, so a record cannot have its own path segment. A small client route component reads `?id=` and passes it to the view. The view looks the record up in the workspace and renders `RecordNotFound` when it is missing.
 - **Tables**: `DataTable` from `components/data-table` with `createColumnHelper<DataTableFeatures, T>()`, `sortFn` (not `sortingFn`), `facets`, `getSearchText` and `rowHref`. For short lists a plain list of rows inside a `Card` reads better than a table.
 
 ## Routing and deep links
 
-- `params` and `searchParams` are Promises. `await` them in server components.
+- The build is `output: "export"`. Route files cannot read `params`, `searchParams`, cookies or headers, and there are no dynamic segments. Read the URL in a client component.
+- Internal links are written without the base path (`/people`); Next.js adds it. Only raw URLs to files in `public/` need `NEXT_PUBLIC_BASE_PATH`.
 - UI state in the URL goes through `useQueryParam` / `setQueryParam` in `hooks/use-query-param.ts` (it writes with `history.replaceState`, so there is no server round trip). The caller sits inside `<Suspense>`.
 - **Every link must target a param that is read.** The contract:
 
 | Param | Read by | Meaning |
 | --- | --- | --- |
+| `?id=` | Person profile, 1:1 record | Which record to show |
 | `?new=1` | People, 1:1s, Commitments, Feedback, Goals | Open the create form |
 | `?person=` | 1:1s, Commitments, Feedback, Goals, Reviews, Coaching | Scope to one person, or preselect them in a create form |
 | `?type=` | 1:1s (with `?new=1`) | Preselect the conversation type |

@@ -269,7 +269,9 @@ export function GoalsView() {
                         variant="ghost"
                         size="sm"
                         render={
-                          <Link href={`/people/${person.id}?tab=goals`} />
+                          <Link
+                            href={`/people/profile?id=${person.id}&tab=goals`}
+                          />
                         }
                       >
                         Goals on the record
@@ -326,7 +328,7 @@ export function GoalsView() {
                         {goals.map((g) => (
                           <li key={g.id} className="min-w-0 text-sm">
                             <Link
-                              href={`/people/${g.personId}?tab=goals`}
+                              href={`/people/profile?id=${g.personId}&tab=goals`}
                               className="line-clamp-2 rounded-sm leading-snug underline-offset-4 outline-none hover:underline focus-visible:ring-2 focus-visible:ring-ring"
                             >
                               {g.title}

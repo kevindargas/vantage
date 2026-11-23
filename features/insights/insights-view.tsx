@@ -420,7 +420,7 @@ export function InsightsView() {
                       </span>
                       <div className="min-w-0 flex-1 basis-56">
                         <Link
-                          href={`/people/${blocker.personId}?tab=blockers`}
+                          href={`/people/profile?id=${blocker.personId}&tab=blockers`}
                           className="text-sm font-medium underline-offset-4 hover:underline"
                         >
                           {blocker.title}

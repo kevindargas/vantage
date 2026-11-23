@@ -50,7 +50,8 @@ describe("1:1s list", () => {
     expect(upcoming.length).toBeGreaterThan(0)
     expect(screen.getAllByText(nameOf(upcoming[0])).length).toBeGreaterThan(0)
     const links = screen.getAllByRole("link").map((a) => a.getAttribute("href"))
-    for (const m of upcoming) expect(links).toContain(`/meetings/${m.id}`)
+    for (const m of upcoming)
+      expect(links).toContain(`/meetings/session?id=${m.id}`)
     expect(screen.getByText("Share held")).toBeInTheDocument()
   })
 
@@ -91,7 +92,8 @@ describe("1:1s list", () => {
       (m) => m.personId !== person.id
     )
     const links = screen.getAllByRole("link").map((a) => a.getAttribute("href"))
-    for (const m of others) expect(links).not.toContain(`/meetings/${m.id}`)
+    for (const m of others)
+      expect(links).not.toContain(`/meetings/session?id=${m.id}`)
   })
 
   it("opens the schedule dialog from the URL with the type preselected", () => {

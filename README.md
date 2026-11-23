@@ -6,6 +6,10 @@ Vantage is a manager's workspace for 1:1s. Add the people who report to you, ans
 
 Everything lives in your browser. There is no account, no server and no network call.
 
+**Live demo:** https://kevindargas.github.io/vantage/
+
+The demo is the full app. It opens with a sample team, and anything you add stays in your own browser.
+
 ## What it does
 
 **Before the 1:1**
@@ -68,13 +72,31 @@ The workspace is one JSON document in the browser's local storage. That has cons
 - Clearing site data deletes it. Export a backup from Settings from time to time.
 - To move to another browser or machine, export there and import here.
 
+## Hosting your own copy
+
+Vantage builds to plain files, so any static host works. `pnpm build` writes the site to `out/`.
+
+**GitHub Pages**
+
+1. Fork or copy the repository.
+2. Run `pnpm pages`. It builds with the repository name as the base path and pushes the result to a `gh-pages` branch.
+3. In the repository settings, under Pages, choose "Deploy from a branch" and select `gh-pages`.
+
+The site appears at `https://<you>.github.io/<repository>/`.
+
+**Anywhere else**
+
+Upload `out/`. If the site sits under a sub-path, set `NEXT_PUBLIC_BASE_PATH` (for example `/vantage`) before building.
+
+Each visitor gets a separate workspace in their own browser. Nothing is shared between visitors and nothing reaches the host.
+
 ## Scripts
 
 | Command | What it does |
 | --- | --- |
 | `pnpm dev` | Start the development server |
-| `pnpm build` | Production build |
-| `pnpm start` | Serve the production build |
+| `pnpm build` | Static build into `out/` |
+| `pnpm pages` | Build and publish to GitHub Pages |
 | `pnpm typecheck` | TypeScript, no emit |
 | `pnpm lint` | ESLint |
 | `pnpm test` | Unit and component tests |

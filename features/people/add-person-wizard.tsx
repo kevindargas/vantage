@@ -333,7 +333,7 @@ export function AddPersonWizard({ open, onOpenChange }: AddPersonWizardProps) {
     })
     reset()
     onOpenChange(false)
-    router.push(`/people/${id}`)
+    router.push(`/people/profile?id=${id}`)
   }
 
   return (

@@ -37,7 +37,7 @@ export function SourceLink({
   if (!meeting) return null
   return (
     <Link
-      href={`/meetings/${meeting.id}`}
+      href={`/meetings/session?id=${meeting.id}`}
       className={cn(
         "rounded-sm text-xs text-muted-foreground underline underline-offset-4 outline-none hover:text-foreground focus-visible:ring-2 focus-visible:ring-ring",
         className

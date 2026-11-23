@@ -315,7 +315,7 @@ function UpcomingRow({ meeting }: { meeting: Meeting }) {
   return (
     <li>
       <Link
-        href={`/meetings/${meeting.id}`}
+        href={`/meetings/session?id=${meeting.id}`}
         className="flex flex-col gap-2 px-4 py-3 transition-colors outline-none hover:bg-muted/50 focus-visible:bg-muted/50 sm:flex-row sm:items-center sm:gap-4"
       >
         <PersonChip
@@ -450,7 +450,7 @@ function WeekEntry({ ws, meeting }: { ws: Workspace; meeting: Meeting }) {
   return (
     <li>
       <Link
-        href={`/meetings/${meeting.id}`}
+        href={`/meetings/session?id=${meeting.id}`}
         className={cn(
           "flex flex-col gap-1 rounded-lg border bg-background px-2.5 py-2 text-xs transition-colors outline-none hover:bg-muted/60 focus-visible:ring-2 focus-visible:ring-ring",
           cancelled && "border-dashed text-muted-foreground"
@@ -635,7 +635,7 @@ function PastTable({ ws, meetings }: { ws: Workspace; meetings: Meeting[] }) {
       }
       searchPlaceholder="Search past 1:1s"
       facets={pastFacets}
-      rowHref={(r) => `/meetings/${r.id}`}
+      rowHref={(r) => `/meetings/session?id=${r.id}`}
       totalLabel="1:1s"
       emptyTitle="No past 1:1s"
       emptyMessage="Held and cancelled 1:1s appear here once there are some."

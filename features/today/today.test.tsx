@@ -33,7 +33,10 @@ describe("Today with the sample team", () => {
       expect(within(card).getByText("Worth asking")).toBeInTheDocument()
       expect(
         within(card).getByRole("button", { name: /Open 1:1/ })
-      ).toHaveAttribute("href", expect.stringMatching(/^\/meetings\/m-/))
+      ).toHaveAttribute(
+        "href",
+        expect.stringMatching(/^\/meetings\/session\?id=m-/)
+      )
     }
   })
 

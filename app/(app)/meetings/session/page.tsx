@@ -2,19 +2,14 @@ import { Suspense } from "react"
 import type { Metadata } from "next"
 
 import { RecordSkeleton } from "@/components/shared/skeletons"
-import { MeetingView } from "@/features/meetings/meeting-view"
+import { MeetingRoute } from "@/features/meetings/meeting-route"
 
 export const metadata: Metadata = { title: "1:1" }
 
-export default async function MeetingPage({
-  params,
-}: {
-  params: Promise<{ id: string }>
-}) {
-  const { id } = await params
+export default function MeetingPage() {
   return (
     <Suspense fallback={<RecordSkeleton />}>
-      <MeetingView id={id} />
+      <MeetingRoute />
     </Suspense>
   )
 }

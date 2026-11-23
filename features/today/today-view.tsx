@@ -429,7 +429,7 @@ function WeekStrip({ ws }: { ws: Workspace }) {
                       return (
                         <li key={m.id}>
                           <Link
-                            href={`/meetings/${m.id}`}
+                            href={`/meetings/session?id=${m.id}`}
                             title={`${mark.label}: ${meetingTypeLabels[m.type]}`}
                             className="flex items-center gap-1.5 rounded-md text-xs outline-none hover:underline focus-visible:ring-2 focus-visible:ring-ring"
                           >

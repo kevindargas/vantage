@@ -181,7 +181,7 @@ export function ask(ws: Workspace, query: string): AskResult {
             ? "No 1:1 held yet"
             : `Last 1:1 ${dayDistance(h.lastHeldDay!)}, every ${h.expectedDays} days expected`,
         meta: `${cadenceStateLabels[h.state]}${h.recentCancellations ? `, ${plural(h.recentCancellations, "cancellation")}` : ""}`,
-        href: `/people/${p.id}?tab=meetings`,
+        href: `/people/profile?id=${p.id}&tab=meetings`,
         tone:
           h.state === "overdue"
             ? ("danger" as const)
@@ -227,7 +227,7 @@ export function ask(ws: Workspace, query: string): AskResult {
         meta: markers.length
           ? `Stated: ${markers.map((m) => m.note).join("; ")}`
           : "No stated pressure on record",
-        href: `/people/${p.id}?tab=wellbeing`,
+        href: `/people/profile?id=${p.id}&tab=wellbeing`,
         tone:
           (s.workload ?? 0) >= 4 || (s.energy ?? 5) <= 2.5
             ? ("danger" as const)
@@ -300,7 +300,7 @@ export function ask(ws: Workspace, query: string): AskResult {
           personId: b.personId,
           text: b.title,
           meta: `${blockerCategoryLabels[b.category]}, raised ${plural(hits.length, "time")}${range ? ` in ${range.label}` : ""}, ${b.status}`,
-          href: `/people/${b.personId}?tab=blockers`,
+          href: `/people/profile?id=${b.personId}&tab=blockers`,
           date: hits[hits.length - 1]?.date,
           tone:
             b.status === "resolved"
@@ -333,7 +333,7 @@ export function ask(ws: Workspace, query: string): AskResult {
         personId: g.personId,
         text: g.title,
         meta: `${goalStatusLabels[g.status]}, ${g.progress}% complete, readiness ${g.readiness}`,
-        href: `/people/${g.personId}?tab=goals`,
+        href: `/people/profile?id=${g.personId}&tab=goals`,
         tone:
           g.status === "off-track"
             ? ("danger" as const)
@@ -403,7 +403,7 @@ export function ask(ws: Workspace, query: string): AskResult {
         meta: a
           ? `${careerTrackLabels[a.track]}${a.targetRole ? `, toward ${a.targetRole}` : ""}, recorded ${formatDay(a.validFrom)}, ${plural(shown, "milestone")} demonstrated`
           : "Ask in the next career conversation",
-        href: `/people/${p.id}?tab=career`,
+        href: `/people/profile?id=${p.id}&tab=career`,
         tone: a ? ("neutral" as const) : ("warning" as const),
       }
     })
@@ -429,7 +429,7 @@ export function ask(ws: Workspace, query: string): AskResult {
         personId: s.personId,
         text: s.text,
         meta: `${stayDriverLabels[s.kind]}${s.action ? `. Action: ${s.action}` : ""}`,
-        href: `/people/${s.personId}?tab=retention`,
+        href: `/people/profile?id=${s.personId}&tab=retention`,
         tone:
           s.kind === "leave-trigger"
             ? ("danger" as const)
@@ -466,7 +466,7 @@ export function ask(ws: Workspace, query: string): AskResult {
         personId: g.personId,
         text: g.title,
         meta: "Goal",
-        href: `/people/${g.personId}?tab=goals`,
+        href: `/people/profile?id=${g.personId}&tab=goals`,
       })
   for (const b of ws.blockers)
     if (ids.has(b.personId) && match(b.title))
@@ -475,7 +475,7 @@ export function ask(ws: Workspace, query: string): AskResult {
         personId: b.personId,
         text: b.title,
         meta: "Blocker",
-        href: `/people/${b.personId}?tab=blockers`,
+        href: `/people/profile?id=${b.personId}&tab=blockers`,
       })
   for (const f of ws.feedback)
     if (
@@ -499,7 +499,7 @@ export function ask(ws: Workspace, query: string): AskResult {
         personId: m.personId,
         text: m.agenda[0]?.text ?? "1:1 notes",
         meta: `1:1 on ${formatDay(dayOf(m.scheduledAt))}`,
-        href: `/meetings/${m.id}`,
+        href: `/meetings/session?id=${m.id}`,
       })
   return {
     query,

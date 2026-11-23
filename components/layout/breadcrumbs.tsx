@@ -2,7 +2,7 @@
 
 import React from "react"
 import Link from "next/link"
-import { usePathname } from "next/navigation"
+import { usePathname, useSearchParams } from "next/navigation"
 import { HomeIcon } from "lucide-react"
 
 import {
@@ -21,28 +21,33 @@ import { workspace } from "@/lib/vantage/store"
 /** Labels for route segments that are modules rather than pages. */
 const segmentLabels: Record<string, string> = {}
 
-/** Routed id prefixes: people (`p-`) and 1:1s (`m-`). */
-export const RECORD_PREFIXES = ["p-", "m-"] as const
-
-export function isRecordSegment(segment: string) {
-  return RECORD_PREFIXES.some((prefix) => segment.startsWith(prefix))
+/** Record pages: the id travels in `?id=` and the crumb shows the record. */
+const RECORD_SEGMENTS: Record<string, string> = {
+  "/people/profile": "Person",
+  "/meetings/session": "1:1",
 }
 
 function navTitle(path: string) {
   return flatNavigation.find((n) => n.href.split("?")[0] === path)?.title
 }
 
-function recordLabel(ws: Workspace, segment: string) {
-  if (segment.startsWith("p-"))
-    return ws.people.find((p) => p.id === segment)?.name ?? "Person"
-  const meeting = ws.meetings.find((m) => m.id === segment)
-  if (!meeting) return "1:1"
+function recordLabel(ws: Workspace, path: string, id: string | null) {
+  if (path === "/people/profile")
+    return ws.people.find((p) => p.id === id)?.name ?? RECORD_SEGMENTS[path]
+  const meeting = ws.meetings.find((m) => m.id === id)
+  if (!meeting) return RECORD_SEGMENTS[path]
   const person = ws.people.find((p) => p.id === meeting.personId)
   return `${person ? firstName(person.name) : "1:1"}, ${formatDay(meeting.scheduledAt)}`
 }
 
-function labelFor(ws: Workspace, path: string, segment: string, last: boolean) {
-  if (isRecordSegment(segment)) return recordLabel(ws, segment)
+function labelFor(
+  ws: Workspace,
+  path: string,
+  segment: string,
+  last: boolean,
+  id: string | null
+) {
+  if (path in RECORD_SEGMENTS) return recordLabel(ws, path, id)
   // Intermediate module segments read as the module, not the landing page.
   if (!last && segmentLabels[segment]) return segmentLabels[segment]
   return (
@@ -52,8 +57,9 @@ function labelFor(ws: Workspace, path: string, segment: string, last: boolean) {
   )
 }
 
-export function Breadcrumbs() {
+function BreadcrumbTrail() {
   const pathname = usePathname()
+  const id = useSearchParams().get("id")
   const ws = workspace.use()
   const segments = pathname.split("/").filter(Boolean)
   const crumbs = segments
@@ -61,7 +67,7 @@ export function Breadcrumbs() {
       const path = "/" + segments.slice(0, i + 1).join("/")
       const last = i === segments.length - 1
       return {
-        label: labelFor(ws, path, seg, last),
+        label: labelFor(ws, path, seg, last, id),
         path,
         hasPage: navTitle(path) !== undefined || last,
       }
@@ -112,5 +118,14 @@ export function Breadcrumbs() {
         })}
       </BreadcrumbList>
     </Breadcrumb>
+  )
+}
+
+/** The trail reads `?id=`, so it renders inside its own Suspense boundary. */
+export function Breadcrumbs() {
+  return (
+    <React.Suspense fallback={<div className="min-w-0 flex-1" />}>
+      <BreadcrumbTrail />
+    </React.Suspense>
   )
 }

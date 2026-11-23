@@ -123,7 +123,7 @@ export function FeedbackEntrySheet({
         {
           label: "Source",
           value: source ? (
-            <Link href={`/meetings/${source.id}`}>
+            <Link href={`/meetings/session?id=${source.id}`}>
               1:1 on {formatDay(source.scheduledAt)}
             </Link>
           ) : (

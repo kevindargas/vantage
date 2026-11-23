@@ -134,7 +134,7 @@ export function ScheduleMeetingDialog({
       description: `${firstName(who?.name ?? "")}, ${formatWhen(scheduledAt)}`,
     })
     close(false)
-    if (navigate) router.push(`/meetings/${id}`)
+    if (navigate) router.push(`/meetings/session?id=${id}`)
   }
 
   return (

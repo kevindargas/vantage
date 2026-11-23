@@ -290,7 +290,7 @@ function PersonCard({
 
   return (
     <Link
-      href={`/people/${person.id}`}
+      href={`/people/profile?id=${person.id}`}
       className={cn(
         "group/person flex h-full lift flex-col gap-4 rounded-xl bg-card p-4 text-sm ring-1 ring-foreground/10 outline-none hover:ring-foreground/20 focus-visible:ring-2 focus-visible:ring-ring",
         archived && "opacity-75"

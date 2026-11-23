@@ -293,7 +293,7 @@ function ConsentTab({ ws }: { ws: Workspace }) {
                     <TableCell>
                       {meeting ? (
                         <Link
-                          href={`/meetings/${meeting.id}`}
+                          href={`/meetings/session?id=${meeting.id}`}
                           className="rounded-sm underline-offset-4 outline-none hover:underline focus-visible:ring-2 focus-visible:ring-ring"
                         >
                           {meetingTypeLabels[meeting.type]},{" "}
@@ -559,7 +559,7 @@ function RetentionTab({ ws }: { ws: Workspace }) {
                         <PersonChip personId={meeting.personId} />
                         <p className="text-xs text-muted-foreground">
                           <Link
-                            href={`/meetings/${meeting.id}`}
+                            href={`/meetings/session?id=${meeting.id}`}
                             className="rounded-sm underline underline-offset-4 outline-none hover:text-foreground focus-visible:ring-2 focus-visible:ring-ring"
                           >
                             {meetingTypeLabels[meeting.type]},{" "}

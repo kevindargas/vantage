@@ -51,7 +51,7 @@ function MeetingRow({ meeting, name }: { meeting: Meeting; name: string }) {
   return (
     <li>
       <Link
-        href={`/meetings/${meeting.id}`}
+        href={`/meetings/session?id=${meeting.id}`}
         className="group/row flex items-start gap-3 px-4 py-3 transition-colors outline-none hover:bg-muted/50 focus-visible:bg-muted/50 focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-inset"
       >
         <div className="min-w-0 flex-1 space-y-1.5">

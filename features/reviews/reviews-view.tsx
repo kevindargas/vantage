@@ -590,7 +590,7 @@ function rateHint(f: FollowThrough) {
 function EvidencePanel({ evidence: e }: { evidence: ReviewEvidence }) {
   const person = e.person
   const name = firstName(person.name)
-  const profile = `/people/${person.id}`
+  const profile = `/people/profile?id=${person.id}`
   const areas = Object.keys(e.coverage) as CompetencyArea[]
   const thin = areas.filter((k) => e.coverage[k] === 0)
   const blockers = [...e.blockersResolved, ...e.blockersOpen]
@@ -623,7 +623,7 @@ function EvidencePanel({ evidence: e }: { evidence: ReviewEvidence }) {
           <MetricTile
             label="1:1s held"
             value={e.meetingsHeld}
-            hint={<Link href={`${profile}?tab=meetings`}>See the 1:1s</Link>}
+            hint={<Link href={`${profile}&tab=meetings`}>See the 1:1s</Link>}
           />
           <MetricTile
             label={`${name} kept`}
@@ -647,7 +647,7 @@ function EvidencePanel({ evidence: e }: { evidence: ReviewEvidence }) {
             return (
               <EvidenceRow
                 key={g.id}
-                href={`${profile}?tab=goals`}
+                href={`${profile}&tab=goals`}
                 title={g.title}
                 meta={`Set ${formatDay(g.validFrom)}${g.keyResults.length ? `, ${done} of ${g.keyResults.length} key results complete` : ""}`}
                 badge={<StateBadge state={goalStatusLabels[g.statusAtEnd]} />}
@@ -684,7 +684,7 @@ function EvidencePanel({ evidence: e }: { evidence: ReviewEvidence }) {
           {e.milestones.map((m) => (
             <EvidenceRow
               key={m.id}
-              href={`${profile}?tab=career`}
+              href={`${profile}&tab=career`}
               title={m.title}
               meta={[
                 m.competency && competencyLabels[m.competency],
@@ -705,7 +705,7 @@ function EvidencePanel({ evidence: e }: { evidence: ReviewEvidence }) {
           {blockers.map((b) => (
             <EvidenceRow
               key={b.id}
-              href={`${profile}?tab=blockers`}
+              href={`${profile}&tab=blockers`}
               title={b.title}
               meta={`${blockerCategoryLabels[b.category]}, raised ${plural(b.occurrences.length, "time")} since ${formatDay(b.validFrom)}`}
               badge={

@@ -16,7 +16,10 @@ export function RootRedirect({ href }: { href: string }) {
   }, [router, href])
   return (
     <main className="flex min-h-svh items-center justify-center bg-background p-6 text-sm text-muted-foreground">
-      <meta httpEquiv="refresh" content={`1;url=${href}`} />
+      <meta
+        httpEquiv="refresh"
+        content={`1;url=${process.env.NEXT_PUBLIC_BASE_PATH ?? ""}${href}/`}
+      />
       <p>
         Opening your workspace.{" "}
         <Link href={href} className="text-foreground underline">

@@ -10,6 +10,9 @@ import { TooltipProvider } from "@/components/ui/tooltip"
 import { siteConfig } from "@/config/site"
 import { themeInitScript } from "@/lib/theme-presets"
 
+/** Public files sit under the base path when the site is hosted on a sub-path. */
+const base = process.env.NEXT_PUBLIC_BASE_PATH ?? ""
+
 const fontSans = Geist({ subsets: ["latin"], variable: "--font-sans" })
 const fontMono = Geist_Mono({ subsets: ["latin"], variable: "--font-mono" })
 
@@ -30,7 +33,7 @@ export const metadata: Metadata = {
   authors: [{ name: siteConfig.author.name, url: siteConfig.author.url }],
   creator: siteConfig.author.name,
   referrer: "same-origin",
-  manifest: "/manifest.webmanifest",
+  manifest: `${base}/manifest.webmanifest`,
   appleWebApp: {
     capable: true,
     title: siteConfig.name,
@@ -39,10 +42,10 @@ export const metadata: Metadata = {
   formatDetection: { telephone: false },
   icons: {
     icon: [
-      { url: "/favicon.svg", type: "image/svg+xml" },
-      { url: "/favicon.ico", sizes: "any" },
+      { url: `${base}/favicon.svg`, type: "image/svg+xml" },
+      { url: `${base}/favicon.ico`, sizes: "any" },
     ],
-    apple: "/icons/apple-touch-icon.png",
+    apple: `${base}/icons/apple-touch-icon.png`,
   },
   robots: { index: false, follow: false },
 }

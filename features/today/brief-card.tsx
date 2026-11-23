@@ -79,7 +79,7 @@ function checkOff(id: string, text: string) {
 export function BriefCard({ brief }: { brief: Brief }) {
   const { meeting, person, carried, changes, questions, nudges } = brief
   const name = firstName(person.name)
-  const href = `/meetings/${meeting.id}`
+  const href = `/meetings/session?id=${meeting.id}`
 
   return (
     <Card data-testid="brief-card" className="h-full">

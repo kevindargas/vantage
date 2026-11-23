@@ -23,9 +23,7 @@ export function withSampleWorkspace() {
 export function withEmptyWorkspace() {
   beforeAll(() => freezeClock(TEST_NOW))
   afterAll(() => freezeClock(null))
-  beforeEach(() =>
-    workspace.__reset(emptyWorkspace({ name: "Kevin Dargas" }))
-  )
+  beforeEach(() => workspace.__reset(emptyWorkspace({ name: "Kevin Dargas" })))
 }
 
 /** Replace the workspace inside a test. */

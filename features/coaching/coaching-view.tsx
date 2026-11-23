@@ -397,7 +397,7 @@ function CoachingCardView({ card }: { card: CoachingCard }) {
             size="sm"
             variant="ghost"
             nativeButton={false}
-            render={<Link href={`/meetings/${card.meetingId}`} />}
+            render={<Link href={`/meetings/session?id=${card.meetingId}`} />}
           >
             Open 1:1
             <ArrowRightIcon data-icon="inline-end" />

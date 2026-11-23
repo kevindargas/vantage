@@ -193,7 +193,7 @@ export function GoalRow({ goal }: { goal: Goal }) {
       <div className="flex flex-wrap items-start justify-between gap-x-4 gap-y-2">
         <div className="min-w-0 flex-1 basis-64">
           <Link
-            href={`/people/${goal.personId}?tab=goals`}
+            href={`/people/profile?id=${goal.personId}&tab=goals`}
             className={cn(
               "rounded-sm text-sm leading-snug font-medium text-pretty underline-offset-4 outline-none hover:underline focus-visible:ring-2 focus-visible:ring-ring",
               isClosed(goal) && "text-muted-foreground"

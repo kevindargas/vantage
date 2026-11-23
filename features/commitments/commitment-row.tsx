@@ -115,7 +115,7 @@ export function CommitmentRow({ commitment }: { commitment: Commitment }) {
           )}
           {source && (
             <Link
-              href={`/meetings/${source.id}`}
+              href={`/meetings/session?id=${source.id}`}
               className="rounded-sm whitespace-nowrap underline-offset-4 outline-none hover:text-foreground hover:underline focus-visible:ring-2 focus-visible:ring-ring"
             >
               From the 1:1 on {formatDay(source.scheduledAt)}

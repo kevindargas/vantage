@@ -36,7 +36,7 @@ describe("people roster", () => {
       expect(screen.getByText(person.name)).toBeInTheDocument()
       expect(screen.getByText(person.name).closest("a")).toHaveAttribute(
         "href",
-        `/people/${person.id}`
+        `/people/profile?id=${person.id}`
       )
     }
     expect(screen.getByText("Direct reports")).toBeInTheDocument()
@@ -149,7 +149,7 @@ describe("add-person wizard", () => {
     expect(ws.goals.filter((g) => g.personId === id)).toHaveLength(1)
     expect(ws.aspirations.filter((a) => a.personId === id)).toHaveLength(1)
     expect(ws.stayDrivers.filter((d) => d.personId === id)).toHaveLength(1)
-    expect(push).toHaveBeenCalledWith(`/people/${id}`)
+    expect(push).toHaveBeenCalledWith(`/people/profile?id=${id}`)
     expect(onOpenChange).toHaveBeenCalledWith(false)
   })
 
@@ -177,7 +177,7 @@ describe("person profile", () => {
     ["goals", "Active goals"],
     ["blockers", "Open blockers"],
   ])("renders the %s tab for Maya", (tab, heading) => {
-    visit(`/people/p-maya?tab=${tab}`)
+    visit(`/people/profile?id=p-maya&tab=${tab}`)
     render(<ProfileView id="p-maya" />)
     expect(
       screen.getByRole("heading", { level: 1, name: "Maya Chen" })
@@ -189,13 +189,13 @@ describe("person profile", () => {
   })
 
   it("lists all ten tabs", () => {
-    visit("/people/p-maya")
+    visit("/people/profile?id=p-maya")
     render(<ProfileView id="p-maya" />)
     expect(screen.getAllByRole("tab")).toHaveLength(10)
   })
 
   it("marks a commitment done from the commitments tab", () => {
-    visit("/people/p-maya?tab=commitments")
+    visit("/people/profile?id=p-maya&tab=commitments")
     render(<ProfileView id="p-maya" />)
     const open = workspace
       .get()
@@ -210,7 +210,7 @@ describe("person profile", () => {
   })
 
   it("shows an archived banner with restore", () => {
-    visit("/people/p-maya")
+    visit("/people/profile?id=p-maya")
     const { rerender } = render(<ProfileView id="p-maya" />)
     expect(screen.queryByRole("button", { name: "Restore" })).toBeNull()
     fireEvent.click(screen.getByRole("button", { name: "More actions" }))
@@ -226,7 +226,7 @@ describe("person profile", () => {
   })
 
   it("renders not-found for an unknown id", () => {
-    visit("/people/p-nobody")
+    visit("/people/profile?id=p-nobody")
     render(<ProfileView id="p-nobody" />)
     expect(
       screen.getByText("We could not find that record")

@@ -184,7 +184,7 @@ function buildSearchIndex(ws: Workspace): SearchEntry[] {
       kind: "Person",
       title: p.name,
       meta: p.role,
-      href: `/people/${p.id}`,
+      href: `/people/profile?id=${p.id}`,
       text: `${p.name} ${p.role} ${p.team ?? ""}`.toLowerCase(),
     })
   for (const m of [...ws.meetings].sort((a, b) =>
@@ -195,7 +195,7 @@ function buildSearchIndex(ws: Workspace): SearchEntry[] {
       kind: "1:1",
       title: `${name}: ${meetingTypeLabels[m.type]}`,
       meta: formatDay(dayOf(m.scheduledAt)),
-      href: `/meetings/${m.id}`,
+      href: `/meetings/session?id=${m.id}`,
       text: `${name} ${meetingTypeLabels[m.type]} ${m.agenda
         .map((a) => a.text)
         .join(" ")} ${m.sharedNotes}`.toLowerCase(),
@@ -216,7 +216,7 @@ function buildSearchIndex(ws: Workspace): SearchEntry[] {
         kind: "Goal",
         title: g.title,
         meta: nameOf(g.personId),
-        href: `/people/${g.personId}?tab=goals`,
+        href: `/people/profile?id=${g.personId}&tab=goals`,
         text: `${g.title} ${nameOf(g.personId)}`.toLowerCase(),
       })
   return entries

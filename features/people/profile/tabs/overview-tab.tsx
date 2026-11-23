@@ -78,7 +78,7 @@ function TabLink({
       variant="ghost"
       size="xs"
       className="text-muted-foreground"
-      render={<Link href={`/people/${person.id}?tab=${tab}`} />}
+      render={<Link href={`/people/profile?id=${person.id}&tab=${tab}`} />}
     >
       {children} <ArrowRightIcon />
     </Button>
@@ -226,7 +226,7 @@ export function OverviewTab({ person }: { person: Person }) {
               <Button
                 size="sm"
                 className="self-start"
-                render={<Link href={`/meetings/${next.id}`} />}
+                render={<Link href={`/meetings/session?id=${next.id}`} />}
               >
                 Open <ArrowRightIcon />
               </Button>
@@ -312,7 +312,7 @@ export function OverviewTab({ person }: { person: Person }) {
               : undefined
           }
           hint={
-            <Link href={`/people/${person.id}?tab=wellbeing`}>
+            <Link href={`/people/profile?id=${person.id}&tab=wellbeing`}>
               Self-reported. See wellbeing
             </Link>
           }

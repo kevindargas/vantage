@@ -126,7 +126,7 @@ export function daysSinceCareer(ws: Workspace, person: Person): number {
 function nudgesForPerson(ws: Workspace, person: Person): Nudge[] {
   const out: Nudge[] = []
   const name = first(person.name)
-  const profile = `/people/${person.id}`
+  const profile = `/people/profile?id=${person.id}`
   const day = today()
 
   /* cadence */
@@ -152,7 +152,7 @@ function nudgesForPerson(ws: Workspace, person: Person): Nudge[] {
       personId: person.id,
       title: `${health.recentCancellations} cancelled 1:1s with ${name}`,
       detail: `That many in ${CANCEL_DRIFT_WINDOW_DAYS} days tells ${name} the conversation is optional. If the calendar is the problem, shorten the slot instead of dropping it.`,
-      href: `${profile}?tab=meetings`,
+      href: `${profile}&tab=meetings`,
       actionLabel: "Review the series",
       basis: "No-cancel rule",
     })
@@ -199,7 +199,7 @@ function nudgesForPerson(ws: Workspace, person: Person): Nudge[] {
       personId: person.id,
       title: `${name} has raised the same blocker ${b.occurrences.length} times`,
       detail: `"${b.title}" has come up since ${formatDay(b.occurrences[0].date)}. ${b.status === "escalated" ? "It is escalated; check whether that is moving." : "Coach it through with GROW, or escalate it yourself."}`,
-      href: `${profile}?tab=blockers`,
+      href: `${profile}&tab=blockers`,
       actionLabel: "Open blocker",
       questionIds: [
         "q-grow-goal",
@@ -279,7 +279,7 @@ function nudgesForPerson(ws: Workspace, person: Person): Nudge[] {
       personId: person.id,
       title: `Check in on ${name}'s workload`,
       detail: `${parts.join(", and ")}. Change the work before offering advice: cut scope, reprioritize, hand decisions back.`,
-      href: `${profile}?tab=wellbeing`,
+      href: `${profile}&tab=wellbeing`,
       actionLabel: "Open workload",
       questionIds: ["q-burn-1", "q-burn-2", "q-burn-3"],
       meetingType: "burnout",
@@ -379,7 +379,7 @@ export function buildNudges(ws: Workspace): Nudge[] {
         title: `${expiring.length} ${expiring.length === 1 ? "transcript is" : "transcripts are"} about to be deleted`,
         detail:
           "Confirm the summary and any drafts you want to keep. The transcript text itself is removed on schedule.",
-        href: `/meetings/${expiring[0].id}`,
+        href: `/meetings/session?id=${expiring[0].id}`,
         actionLabel: "Review",
         basis: "Retention schedule",
       })
