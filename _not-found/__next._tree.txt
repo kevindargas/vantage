@@ -1,0 +1,5 @@
+:HL["/vantage/_next/static/chunks/1t8ds1798lx7s.css","style"]
+:HL["/vantage/_next/static/chunks/35v5b4jt4j1pe.css","style"]
+2:[["children",{"s":"__PAGE__","h":160}]]
+1:[["children",{"s":"/_not-found","h":64,"c":"$Q2"}]]
+0:{"b":"OI_zQeMm3SCPWzcjNtTYH","t":{"t":{"s":"","h":16,"c":"$Q1"}}}
