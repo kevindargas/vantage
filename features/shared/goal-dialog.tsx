@@ -30,6 +30,7 @@ import { Textarea } from "@/components/ui/textarea"
 import { readinessLabels } from "@/lib/constants"
 import type { Readiness } from "@/lib/types"
 import { actions } from "@/lib/vantage/store"
+import { NOT_ALIGNED, useObjectiveItems } from "./align-control"
 import { PersonSelect } from "./person"
 
 export interface GoalDialogProps {
@@ -56,6 +57,8 @@ export function GoalDialog({
   const [title, setTitle] = React.useState("")
   const [readiness, setReadiness] = React.useState<Readiness>("D3")
   const [keyResults, setKeyResults] = React.useState("")
+  const [objective, setObjective] = React.useState(NOT_ALIGNED)
+  const objectiveItems = useObjectiveItems()
   const selected = personId ?? person
 
   function close(next: boolean) {
@@ -64,6 +67,7 @@ export function GoalDialog({
       setTitle("")
       setKeyResults("")
       setReadiness("D3")
+      setObjective(NOT_ALIGNED)
       setPerson(personId ?? "")
     }
   }
@@ -76,6 +80,7 @@ export function GoalDialog({
       title,
       readiness,
       keyResults: keyResults.split("\n"),
+      objectiveId: objective === NOT_ALIGNED ? undefined : objective,
       sourceMeetingId,
     })
     toast.success("Goal added", { description: title.trim() })
@@ -115,6 +120,29 @@ export function GoalDialog({
                 autoFocus
               />
             </Field>
+            {objectiveItems.length > 1 && (
+              <Field>
+                <FieldLabel htmlFor="goal-objective">
+                  Which of my goals it supports
+                </FieldLabel>
+                <Select
+                  value={objective}
+                  onValueChange={(v) => v && setObjective(v)}
+                  items={objectiveItems}
+                >
+                  <SelectTrigger id="goal-objective" className="w-full">
+                    <SelectValue />
+                  </SelectTrigger>
+                  <SelectContent>
+                    {objectiveItems.map((item) => (
+                      <SelectItem key={item.value} value={item.value}>
+                        {item.label}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+              </Field>
+            )}
             <Field>
               <FieldLabel htmlFor="goal-readiness">
                 Readiness on this goal

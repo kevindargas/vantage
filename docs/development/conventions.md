@@ -87,6 +87,7 @@ Every page follows the same skeleton so the eye lands in the same place on every
 | Param | Read by | Meaning |
 | --- | --- | --- |
 | `?id=` | Person profile, 1:1 record | Which record to show |
+| `?new=business`, `?new=mine` | Alignment | Open the form for a business goal or one of the manager's goals |
 | `?new=1` | People, 1:1s, Commitments, Feedback, Goals | Open the create form |
 | `?person=` | 1:1s, Commitments, Feedback, Goals, Reviews, Coaching | Scope to one person, or preselect them in a create form |
 | `?type=` | 1:1s (with `?new=1`) | Preselect the conversation type |

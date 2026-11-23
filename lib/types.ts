@@ -208,6 +208,8 @@ export interface Goal {
   status: GoalStatus
   readiness: Readiness
   keyResults: KeyResult[]
+  /** The manager objective this goal supports, when it supports one. */
+  objectiveId?: string
   validFrom: string
   validTo?: string
   recordedAt: string
@@ -488,6 +490,7 @@ export interface Workspace {
   meetings: Meeting[]
   commitments: Commitment[]
   goals: Goal[]
+  objectives: Objective[]
   blockers: Blocker[]
   feedback: FeedbackEntry[]
   aspirations: Aspiration[]
@@ -499,6 +502,31 @@ export interface Workspace {
   customQuestions: Question[]
   consentLog: ConsentEvent[]
   reviews: ReviewDraft[]
+}
+
+/* ------------------------------------------------------------- alignment */
+
+/**
+ * `business` is a goal the company or department has set. `manager` is one of
+ * the manager's own goals, which can support a business goal.
+ */
+export type ObjectiveLevel = "business" | "manager"
+
+/** A goal above the individual: the direction team goals line up behind. */
+export interface Objective {
+  /** `o-` prefix. */
+  id: string
+  level: ObjectiveLevel
+  title: string
+  /** How success is judged, in plain words: "Uptime at 99.95 percent". */
+  measure?: string
+  /** For a manager objective: the business goal it supports. */
+  parentId?: string
+  status: GoalStatus
+  validFrom: string
+  validTo?: string
+  recordedAt: string
+  history: StatusChange<GoalStatus>[]
 }
 
 /** Keys of the workspace that hold `{ id: string }` lists. */

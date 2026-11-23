@@ -19,6 +19,7 @@ import {
 import { Progress } from "@/components/ui/progress"
 import { Eyebrow } from "@/components/shared/eyebrow"
 import { StateBadge } from "@/components/shared/status-badge"
+import { AlignControl } from "@/features/shared/align-control"
 import { goalStatusLabels, readinessLabels } from "@/lib/constants"
 import { formatPercent } from "@/lib/format"
 import type { Goal, GoalStatus, Readiness } from "@/lib/types"
@@ -225,6 +226,7 @@ export function GoalRow({ goal }: { goal: Goal }) {
             {done} of {total} key results
           </span>
         )}
+        {!isClosed(goal) && <AlignControl goal={goal} className="ml-auto" />}
       </div>
     </li>
   )

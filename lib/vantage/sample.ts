@@ -19,6 +19,7 @@ import type {
   ConsentEvent,
   FeedbackEntry,
   Goal,
+  Objective,
   GoalStatus,
   Meeting,
   MeetingType,
@@ -828,6 +829,107 @@ export function buildSampleWorkspace(): Workspace {
 
   /* ------------------------------------------------------------------ goals */
 
+  const objectives: Objective[] = []
+  const objective = (
+    oid: string,
+    level: Objective["level"],
+    title: string,
+    measure: string,
+    setDaysAgo: number,
+    parentId?: string,
+    change?: [GoalStatus, number, string]
+  ) => {
+    const history: Objective["history"] = [
+      {
+        status: "on-track",
+        date: ago(setDaysAgo),
+        recordedAt: at(ago(setDaysAgo)),
+      },
+    ]
+    if (change)
+      history.push({
+        status: change[0],
+        date: ago(change[1]),
+        recordedAt: at(ago(change[1])),
+        note: change[2],
+      })
+    objectives.push({
+      id: oid,
+      level,
+      title,
+      measure,
+      parentId,
+      status: history[history.length - 1].status,
+      validFrom: ago(setDaysAgo),
+      recordedAt: at(ago(setDaysAgo)),
+      history,
+    })
+  }
+
+  objective(
+    "o-retention",
+    "business",
+    "Grow net revenue retention to 115 percent",
+    "Net revenue retention, reported monthly",
+    90
+  )
+  objective(
+    "o-reliable",
+    "business",
+    "Be the most reliable platform in the category",
+    "99.95 percent uptime for four quarters running",
+    90
+  )
+  objective(
+    "o-regions",
+    "business",
+    "Serve customers from two new regions",
+    "Europe and Asia Pacific live for customers by mid-year",
+    90,
+    undefined,
+    ["at-risk", 20, "Data residency review is behind schedule"]
+  )
+  objective(
+    "o-billing",
+    "manager",
+    "Launch usage-based billing with clean invoices",
+    "Live for all plans, invoice errors below 0.5 percent",
+    80,
+    "o-retention",
+    ["at-risk", 16, "Scope grew twice after sprint start"]
+  )
+  objective(
+    "o-spend",
+    "manager",
+    "Cut cloud spend per customer by 15 percent",
+    "Monthly cost per active customer",
+    80,
+    "o-retention"
+  )
+  objective(
+    "o-uptime",
+    "manager",
+    "Hold 99.95 percent uptime while shipping daily",
+    "Uptime and deployment frequency, reviewed monthly",
+    80,
+    "o-reliable"
+  )
+  objective(
+    "o-multiregion",
+    "manager",
+    "Get the multi-region design approved and staffed",
+    "Design signed off and two senior engineers hired",
+    80,
+    "o-regions"
+  )
+  objective(
+    "o-leads",
+    "manager",
+    "Grow the next layer of technical leads",
+    "Two engineers running a guild or a project on their own",
+    80
+  )
+
   const goals: Goal[] = []
   const goal = (
     key: string,
@@ -963,6 +1065,21 @@ export function buildSampleWorkspace(): Workspace {
   goal("kenji", "Document the search relevance model", "D4", 100, 120, [
     ["done", 45],
   ])
+
+  // Which of the manager's objectives each goal supports. Goals left out are
+  // unaligned on purpose, so the alignment view has gaps to show.
+  const supports: Record<string, string> = {
+    "Migrate ingestion to the new pipeline": "o-uptime",
+    "Cut p95 query latency by 30 percent": "o-uptime",
+    "Complete the on-call readiness checklist": "o-uptime",
+    "Raise team deployment frequency to daily": "o-uptime",
+    "Launch usage-based billing": "o-billing",
+    "Reduce invoice generation errors below 0.5 percent": "o-billing",
+    "Define the multi-region architecture": "o-multiregion",
+    "Hire two senior engineers": "o-multiregion",
+    "Grow two engineers into guild leads": "o-leads",
+  }
+  for (const g of goals) g.objectiveId = supports[g.title]
 
   /* --------------------------------------------------------------- blockers */
 
@@ -1663,6 +1780,7 @@ export function buildSampleWorkspace(): Workspace {
     meetings,
     commitments,
     goals,
+    objectives,
     blockers,
     feedback,
     aspirations,

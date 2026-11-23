@@ -23,6 +23,7 @@ import {
 import { Input } from "@/components/ui/input"
 import { Progress } from "@/components/ui/progress"
 import { ToggleGroup, ToggleGroupItem } from "@/components/ui/toggle-group"
+import { AlignControl } from "@/features/shared/align-control"
 import { GoalDialog } from "@/features/shared/goal-dialog"
 import { goalStatusLabels, readinessLabels } from "@/lib/constants"
 import { firstName, formatDay } from "@/lib/format"
@@ -88,6 +89,7 @@ function GoalCard({
               {goal.quarter.replace("-", " ")}
               {goal.description && `. ${goal.description}`}
             </p>
+            {!closed && <AlignControl goal={goal} className="mt-1" />}
           </div>
           <div className="flex shrink-0 items-center gap-1.5">
             <StateBadge state={goalStatusLabels[goal.status]} />

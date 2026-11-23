@@ -16,6 +16,7 @@ import {
   TargetIcon,
   UserPlusIcon,
   UsersIcon,
+  WaypointsIcon,
 } from "lucide-react"
 
 /**
@@ -101,6 +102,22 @@ export const navigation: NavGroup[] = [
   {
     label: "Develop",
     items: [
+      {
+        title: "Alignment",
+        href: "/alignment",
+        icon: WaypointsIcon,
+        shortcut: "G N",
+        keywords: [
+          "business goals",
+          "my goals",
+          "company goals",
+          "strategy",
+          "line of sight",
+          "cascade",
+        ],
+        description:
+          "Business goals, your goals and how the team's goals connect to them",
+      },
       {
         title: "Goals",
         href: "/goals",

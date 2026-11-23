@@ -22,6 +22,8 @@ import type {
   FeedbackEntry,
   Goal,
   GoalStatus,
+  Objective,
+  ObjectiveLevel,
   ManagerProfile,
   Meeting,
   MeetingType,
@@ -79,6 +81,7 @@ export function emptyWorkspace(manager?: Partial<ManagerProfile>): Workspace {
     meetings: [],
     commitments: [],
     goals: [],
+    objectives: [],
     blockers: [],
     feedback: [],
     aspirations: [],
@@ -100,6 +103,7 @@ const LIST_KEYS: CollectionKey[] = [
   "meetings",
   "commitments",
   "goals",
+  "objectives",
   "blockers",
   "feedback",
   "aspirations",
@@ -130,6 +134,22 @@ export function normalizeWorkspace(input: unknown): Workspace {
   for (const key of LIST_KEYS) {
     const list = raw[key]
     if (Array.isArray(list)) (next[key] as unknown[]) = list
+  }
+  // A sample workspace saved before objectives existed gets the sample ones,
+  // matched to its goals by person and title.
+  if (!Array.isArray(raw.objectives) && next.settings.sampleData) {
+    const sample = buildSampleWorkspace()
+    const nameOf = (ws: Workspace, personId: string) =>
+      ws.people.find((p) => p.id === personId)?.name
+    next.objectives = sample.objectives
+    next.goals = next.goals.map((g) => {
+      const match = sample.goals.find(
+        (s) =>
+          s.title === g.title &&
+          nameOf(sample, s.personId) === nameOf(next, g.personId)
+      )
+      return match?.objectiveId ? { ...g, objectiveId: match.objectiveId } : g
+    })
   }
   return next
 }
@@ -309,7 +329,17 @@ export interface NewGoalInput {
   quarter?: string
   readiness: Goal["readiness"]
   keyResults?: string[]
+  /** The manager objective this goal supports. */
+  objectiveId?: string
   sourceMeetingId?: string
+}
+
+export interface NewObjectiveInput {
+  level: ObjectiveLevel
+  title: string
+  measure?: string
+  /** For a manager objective: the business goal it supports. */
+  parentId?: string
 }
 
 export interface NewBlockerInput {
@@ -765,6 +795,7 @@ export const actions = {
       progress: 0,
       status: "on-track",
       readiness: input.readiness,
+      objectiveId: input.objectiveId || undefined,
       keyResults: (input.keyResults ?? [])
         .filter((t) => t.trim())
         .map((text) => ({ id: newId("kr"), text: text.trim(), done: false })),
@@ -816,6 +847,60 @@ export const actions = {
         : g.progress
       return { ...g, keyResults, progress }
     })
+  },
+
+  /* ---- alignment: business goals and the manager's own goals ---- */
+
+  addObjective(input: NewObjectiveInput): string {
+    const id = newId("o")
+    const at = stamp()
+    const day = today()
+    const objective: Objective = {
+      id,
+      level: input.level,
+      title: input.title.trim(),
+      measure: input.measure?.trim() || undefined,
+      parentId:
+        input.level === "manager" ? input.parentId || undefined : undefined,
+      status: "on-track",
+      validFrom: day,
+      recordedAt: at,
+      history: [{ status: "on-track", date: day, recordedAt: at }],
+    }
+    set((ws) => ({ ...ws, objectives: [...ws.objectives, objective] }))
+    return id
+  },
+
+  /** Change an objective's status. Done and dropped close its validity. */
+  setObjectiveStatus(id: string, status: GoalStatus, note?: string) {
+    const day = today()
+    patchList("objectives", id, (o) => ({
+      ...o,
+      status,
+      validTo: status === "done" || status === "dropped" ? day : undefined,
+      history: [...o.history, { status, date: day, recordedAt: stamp(), note }],
+    }))
+  },
+
+  /**
+   * Delete an objective. Goals and objectives that pointed at it stay on the
+   * record and become unaligned.
+   */
+  removeObjective(id: string) {
+    set((ws) => ({
+      ...ws,
+      objectives: ws.objectives
+        .filter((o) => o.id !== id)
+        .map((o) => (o.parentId === id ? { ...o, parentId: undefined } : o)),
+      goals: ws.goals.map((g) =>
+        g.objectiveId === id ? { ...g, objectiveId: undefined } : g
+      ),
+    }))
+  },
+
+  /** Point a team goal at one of the manager's objectives, or clear the link. */
+  alignGoal(goalId: string, objectiveId: string | undefined) {
+    patchList("goals", goalId, (g) => ({ ...g, objectiveId }))
   },
 
   /* ---- pillar 3: blockers ---- */

@@ -37,6 +37,7 @@ The demo is the full app. It opens with a sample team, and anything you add stay
 - A profile per person with ten views, including a timeline and an "as of" date that shows the record as it stood on any past day.
 - Commitments with follow-through for both sides. Yours is tracked as closely as theirs.
 - Goals with a readiness level, so direction and support match the task.
+- Alignment: the business goals you answer to, your own goals, and which of your goals each person's goals support. It shows the share of team goals tied to yours, your goals with no one behind them and the people with no line of sight yet.
 - A feedback ledger in situation, behavior, impact and intent form.
 - Review drafts built from dated evidence, with a check for vague wording. No ratings.
 - Team insights: cadence health, follow-through, recurring friction, workload trends.
